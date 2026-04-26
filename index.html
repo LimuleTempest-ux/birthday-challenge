@@ -63,6 +63,16 @@
         .g-card { background: var(--gold-card); border-color: var(--gold); box-shadow: 0 0 25px var(--gold); }
         .blk-card { background: var(--black-card); border-color: #333; color: #777; }
         .fail-box { border: 1px solid var(--red); padding: 15px; border-radius: 10px; color: var(--red); margin: 20px 0; }
+        .skull-mark {
+    display: block;
+    font-size: 2.5rem;
+    color: #ff0000;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 10px;
+    animation: blinker 1s linear infinite;
+}
+@keyframes blinker { 50% { opacity: 0; } }
     </style>
 </head>
 <body>
@@ -156,6 +166,7 @@
     </div>
 
     <script>
+        let attempts = parseInt(localStorage.getItem('bday_attempts')) || 0;
         let playerName = "";
         let scoreP1 = 0; let scoreP2 = 0;
         let wonBlue = false; let wonRed = false;
@@ -306,63 +317,61 @@
             if(scoreP2 >= 8) { wonRed = true; document.getElementById('redCardBox').classList.remove('hidden'); }
             else { wonRed = false; document.getElementById('p2Fail').classList.remove('hidden'); }
         }
-
         function finalizeChallenge() {
-            showPage(9);
-            const area = document.getElementById('finalStatusArea');
-            
-            // 1. Check how many times they opened the page
-            let attempts = parseInt(localStorage.getItem('bday_attempts')) || 1;
-            
-            // 2. The symbol is ONLY created if attempts is GREATER than 1
-            // If attempts === 1, the symbol is just an empty ""
-            let symbol = (attempts > 1) ? `<span class="retry-mark">🤡 Attempt #${attempts}</span>` : "";
+    showPage(9);
+    const area = document.getElementById('finalStatusArea');
+    
+    // Update the counter: this play is now finished
+    localStorage.setItem('bday_attempts', attempts + 1);
+    
+    // Create the Skull symbol if they have played before (attempts > 0)
+    let symbol = (attempts > 0) ? `<div class="skull-mark">☠️ REPEATER</div>` : "";
 
-            let finalContent = "";
+    let finalContent = "";
 
-            // Logic for the Blue Card (Quiz)
-            if(wonBlue) {
-                finalContent += `
-                <div class="reward-box b-card">
-                    ${symbol}
-                    <h3>🏆 The Blue Card</h3>
-                    <p>Well done ✅ partner. Je ne sais pas quoi t'offrir, but you can ask me anything you want 💙</p>
-                </div>`;
-            }
+    // Logic for the Blue Card (Quiz)
+    if(wonBlue) {
+        finalContent += `
+        <div class="reward-box b-card">
+            ${symbol}
+            <h3>🏆 The Blue Card</h3>
+            <p>Well done ✅ partner. Je ne sais pas quoi t'offrir, but you can ask me anything you want 💙</p>
+        </div>`;
+    }
 
-            // Logic for the Red Card (Puzzle)
-            if(wonRed) {
-                finalContent += `
-                <div class="reward-box r-card">
-                    ${symbol}
-                    <h3>🔥 The Red Card</h3>
-                    <p>You have mastered the Abyss and won a free month of Netflix 🎬</p>
-                </div>`;
-            }
+    // Logic for the Red Card (Puzzle)
+    if(wonRed) {
+        finalContent += `
+        <div class="reward-box r-card">
+            ${symbol}
+            <h3>🔥 The Red Card</h3>
+            <p>You have mastered the Abyss and won a free month of Netflix 🎬</p>
+        </div>`;
+    }
 
-            // Logic for the Ultimate Rank (Both)
-            if(wonBlue && wonRed) {
-                finalContent += `
-                <div class="reward-box g-card">
-                    ${symbol}
-                    <h1>🏆 Golden Card</h1>
-                    <p>You are my premium challenger my chancellor you receive the title of lord ${playerName}</p>
-                </div>`;
-            } 
-            
-            // Logic for the Loser (Neither)
-            if (!wonBlue && !wonRed) {
-                finalContent += `
-                <div class="reward-box blk-card">
-                    <h1>💀 Black Card</h1>
-                    <p>Thank you for trying 😂😂 you're a loser capture your card and send it to my inbox</p>
-                </div>`;
-            }
+    // Logic for the Ultimate Rank (Both)
+    if(wonBlue && wonRed) {
+        finalContent += `
+        <div class="reward-box g-card">
+            ${symbol}
+            <h1>🏆 Golden Card</h1>
+            <p>You are my premium challenger my chancellor you receive the title of lord ${playerName}</p>
+        </div>`;
+    } 
+    
+    // Logic for the Loser (Neither)
+    if (!wonBlue && !wonRed) {
+        finalContent += `
+        <div class="reward-box blk-card">
+            <h1>💀 Black Card</h1>
+            <p>Thank you for trying 😂😂 you're a loser capture your card and send it to my inbox</p>
+        </div>`;
+    }
 
-            area.innerHTML = finalContent;
-            
-            // Lock the game forever
-            localStorage.setItem('played_bday_vfinal', 'true');
+    area.innerHTML = finalContent;
+    
+    // Lock the game
+    localStorage.setItem('played_bday_vfinal', 'true');
         }
         function displayFinalCards() {
             const area = document.getElementById('finalStatusArea');
