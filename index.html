@@ -380,6 +380,37 @@
                 document.getElementById('firstResultTag').innerText = "Note: You have already played. Your first results are saved as your official score.";
             }
         };
+                    let selectedImg = null;
+
+        // Add this to your initialization or at the top of the script
+        document.addEventListener('click', function(e) {
+            // 1. Selecting an image from the bank or a square
+            if (e.target.classList.contains('draggable-img')) {
+                if (selectedImg) selectedImg.style.border = "1px solid white"; // Reset previous
+                selectedImg = e.target;
+                selectedImg.style.border = "3px solid #f1c40f"; // Highlight it in gold
+            } 
+            
+            // 2. Tapping a square to place the selected image
+            else if (selectedImg && (e.target.classList.contains('puzzle-square') || e.target.parentElement.classList.contains('puzzle-square'))) {
+                let targetSquare = e.target.classList.contains('puzzle-square') ? e.target : e.target.parentElement;
+                
+                // Check if square is empty (using our previous rule)
+                if (targetSquare.querySelectorAll('img').length === 0) {
+                    targetSquare.appendChild(selectedImg);
+                    selectedImg.style.border = "1px solid white";
+                    selectedImg = null; // Clear selection
+                }
+            }
+            
+            // 3. Tapping the bank to return an image
+            else if (selectedImg && (e.target.id === 'imageBank' || e.target.parentElement.id === 'imageBank')) {
+                document.getElementById('imageBank').appendChild(selectedImg);
+                selectedImg.style.border = "1px solid white";
+                selectedImg = null;
+            }
+        });
+        
     </script>
 </body>
 </html>
