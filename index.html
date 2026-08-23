@@ -12,32 +12,36 @@
         }
         body { font-family: var(--font-main); background: #000; color: white; text-align: center; margin: 0; padding: 20px; }
         .card { background: rgba(10, 10, 15, 0.98); padding: 40px; border-radius: 25px; border: 2px solid #222; max-width: 650px; margin: 40px auto; box-shadow: 0 0 30px rgba(255,255,255,0.05); }
-        .hidden { display: none; }
+        .hidden { display: none !important; }
         h1, h2, h3 { text-transform: uppercase; letter-spacing: 2px; color: var(--gold); }
         p { font-size: 1.1rem; line-height: 1.6; color: #ddd; font-style: italic; }
         
         button.next-btn, .arrow-btn { cursor: pointer; transition: 0.3s; font-weight: bold; border-radius: 10px; }
-        .next-btn { background: var(--blue); color: white; border: none; padding: 05px 15px; font-size: 1.1rem; margin-top: 10px;}
+        .next-btn { background: var(--blue); color: white; border: none; padding: 12px 24px; font-size: 1.1rem; margin-top: 15px;}
         .next-btn:hover { background: var(--gold); color: black; }
 
         .blue-rose-bg { background-image: radial-gradient(circle, rgba(0,0,0,0.7), rgba(0,0,0,1)), url('blue-rose.jpg'); background-size: cover; background-position: center; padding: 120px 20px; }
-        .arrow-btn { font-size: 20px; background: none; border: none; color: var(--gold); }
+        .arrow-btn { font-size: 20px; background: none; border: none; color: var(--gold); padding: 10px 20px; }
 
-        .quiz-option { display: block; background: #1a1a1a; margin: 12px 0; padding: 18px; border-radius: 12px; cursor: pointer; border: 1px solid #333; }
+        .quiz-option { display: block; background: #1a1a1a; margin: 12px 0; padding: 18px; border-radius: 12px; cursor: pointer; border: 1px solid #333; font-weight: bold; }
+        .quiz-option:hover { background: #2a2a2a; border-color: var(--gold); color: var(--gold); }
+
         .puzzle-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 30px; }
         .puzzle-square { 
-            width: 160px; /* Increased width */
-            height: 180px; /* Increased height */
+            width: 160px; 
+            height: 180px; 
             border: 2px dashed #444; 
             background: #080808; 
-            font-size: 0.75rem; /* Smaller text size */
+            font-size: 0.75rem; 
             padding: 5px; 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            justify-content: flex-start; /* Moves text to the top to leave room for image */
+            justify-content: flex-start; 
             text-transform: uppercase;
-            overflow: hidden; /* Keeps things neat */
+            overflow: hidden; 
+            cursor: pointer;
+            box-sizing: border-box;
         }
 
         .puzzle-square p {
@@ -45,17 +49,36 @@
             font-style: normal;
             line-height: 1.2;
             color: #aaa;
+            pointer-events: none;
         }
 
         .draggable-img { 
-            width: 90px; /* Slightly adjusted for the new square size */
-            height: 90px; 
-            cursor: grab; 
+            width: 85px; 
+            height: 85px; 
+            cursor: pointer; 
             object-fit: cover; 
             border: 1px solid white; 
-            margin: 5px auto; 
+            margin: 5px; 
+            user-select: none;
+            touch-action: manipulation;
         }
-        .draggable-img { width: 85px; height: 85px; cursor: grab; object-fit: cover; border: 1px solid white; margin: 5px; }
+
+        .draggable-img.selected {
+            border: 3px solid var(--gold);
+            box-shadow: 0 0 12px var(--gold);
+            transform: scale(1.05);
+        }
+
+        .image-bank {
+            min-height: 100px;
+            padding: 15px;
+            border: 1px dashed #333;
+            margin-top: 20px;
+            border-radius: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
 
         .reward-box { border-radius: 16px; padding: 25px; border: 1px solid transparent; margin-top: 20px; text-align: center; }
         .b-card { background: var(--blue-card); border-color: var(--blue); color: #fff; }
@@ -64,15 +87,15 @@
         .blk-card { background: var(--black-card); border-color: #333; color: #777; }
         .fail-box { border: 1px solid var(--red); padding: 15px; border-radius: 10px; color: var(--red); margin: 20px 0; }
         .skull-mark {
-    display: block;
-    font-size: 2.5rem;
-    color: #ff0000;
-    text-align: center;
-    font-weight: bold;
-    margin-bottom: 10px;
-    animation: blinker 1s linear infinite;
-}
-@keyframes blinker { 50% { opacity: 0; } }
+            display: block;
+            font-size: 2.5rem;
+            color: #ff0000;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 10px;
+            animation: blinker 1s linear infinite;
+        }
+        @keyframes blinker { 50% { opacity: 0; } }
     </style>
 </head>
 <body>
@@ -80,11 +103,11 @@
     <div id="page1" class="card blue-rose-bg">
         <h1>A Royal Declaration!</h1>
         <h2>THE LEGACY OF APRIL 26</h2>
-        <P>The celebration has passed <strong>"Sunday 26, April 2026"</strong> but the King's challenge remains, the Greatest King of All Time.</p>
+        <p>The celebration has passed <strong>"Sunday 26, April 2026"</strong> but the King's challenge remains, the Greatest King of All Time.</p>
         <p>A new chapter began, do you still have what it takes to navigate the King trials?</p>
-        <button class="arrow-btn" onclick="showPage(2)">ENTER THE ARCHIVES➔</button>
+        <button type="button" class="arrow-btn" onclick="showPage(2)">ENTER THE ARCHIVES ➔</button>
         <p style="color: #f1c40f; font-style: italic; font-size: 0.9rem;">
-    🔄 For the best experience, please turn your phone to <b>Landscape Mode</b>.
+            🔄 For the best experience, please turn your phone to <b>Landscape Mode</b>.
         </p>
     </div>
 
@@ -99,14 +122,14 @@
         </div>
         <p id="firstResultTag" style="color:var(--gold); font-weight:bold;"></p>
         <p>Enter your Royal Title or Name</p>
-        <input type="text" id="playerNameInput" style="padding: 10px; border-radius: 5px; width: 70%;" placeholder="Example:Lord Darius,Lady Jeanne"><br>
-        <button class="next-btn" onclick="registerAndRulesP1()">I AM READY</button>
+        <input type="text" id="playerNameInput" style="padding: 10px; border-radius: 5px; width: 70%; font-size: 1rem;" placeholder="Example: Lord Darius, Lady Jeanne"><br>
+        <button type="button" class="next-btn" onclick="registerAndRulesP1()">I AM READY</button>
     </div>
 
     <div id="page3" class="card hidden">
         <h1>Part 1: The Quiz</h1>
         <p>Welcome <span id="rulesP1Name"></span>. Answer 10 questions to prove you know the King</p>
-        <button class="next-btn" onclick="startQuiz()">Begin the Test</button>
+        <button type="button" class="next-btn" onclick="startQuiz()">Begin the Test</button>
     </div>
 
     <div id="page4" class="card hidden">
@@ -125,24 +148,24 @@
             <p>Well done ✅ partner. Je ne sais pas quoi t'offrir, but you can ask me anything you want 💙</p>
             <p><strong>Capture this card now before starting part 2</strong></p>
         </div>
-        <button class="next-btn" onclick="showPage(6)">Proceed to Part 2</button>
+        <button type="button" class="next-btn" onclick="showPage(6)">Proceed to Part 2</button>
     </div>
 
     <div id="page6" class="card hidden">
         <h1>Part 2: The Abyss</h1>
         <p>The final trial <span id="rulesP2Name"></span>. Match the images to the messages</p>
-        <button class="next-btn" onclick="startPuzzle()">Step into the Abyss</button>
+        <button type="button" class="next-btn" onclick="startPuzzle()">Step into the Abyss</button>
     </div>
 
     <div id="page7" class="card hidden">
         <h1>Identity Puzzle</h1>
         <p>All squares must be filled before submitting</p>
         <p style="color: #3498db; font-weight: bold;">
-    💡 Tip: Tap an image, then tap the square where you think it belongs!
+            💡 Tip: Tap an image to select it, then tap a square to place it!
         </p>
         <div class="puzzle-grid" id="puzzleGrid"></div>
-        <div class="image-bank" id="imageBank"></div>
-        <button class="next-btn" onclick="checkPuzzle()">Submit Results</button>
+        <div class="image-bank" id="imageBank" onclick="dropBackTap(event)" ondrop="dropBack(event)" ondragover="allowDrop(event)"></div>
+        <button type="button" class="next-btn" onclick="checkPuzzle()">Submit Results</button>
     </div>
 
     <div id="page8" class="card hidden">
@@ -156,29 +179,36 @@
             <p>You have mastered the Abyss and won a free month of Netflix. Your loyalty is legendary 🎬</p>
             <p><strong>Capture this card now</strong></p>
         </div>
-        <button class="next-btn" onclick="finalizeChallenge()">Claim Final Rank</button>
+        <button type="button" class="next-btn" onclick="finalizeChallenge()">Claim Final Rank</button>
     </div>
 
     <div id="page9" class="card hidden">
         <div id="finalStatusArea"></div>
         <p>I am waiting for you in my inbox with your cards red or blue for those who have it</p>
         <p><strong>Darius (Limule Tempest)</strong></p>
-        <button class="next-btn" style="background:#333;" onclick="location.reload()">Play Again</button>
+        <button type="button" class="next-btn" style="background:#333;" onclick="location.reload()">Play Again</button>
     </div>
 
     <script>
         let attempts = parseInt(localStorage.getItem('bday_attempts')) || 0;
         let playerName = "";
-        let scoreP1 = 0; let scoreP2 = 0;
-        let wonBlue = false; let wonRed = false;
+        let scoreP1 = 0; 
+        let scoreP2 = 0;
+        let wonBlue = false; 
+        let wonRed = false;
+        let selectedImgElement = null;
 
         function showPage(n) {
             document.querySelectorAll('.card').forEach(c => c.classList.add('hidden'));
-            document.getElementById('page'+n).classList.remove('hidden');
+            const page = document.getElementById('page' + n);
+            if (page) {
+                page.classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
         }
 
         function registerAndRulesP1() {
-            playerName = document.getElementById('playerNameInput').value || "Player";
+            playerName = document.getElementById('playerNameInput').value.trim() || "Player";
             document.getElementById('rulesP1Name').innerText = playerName;
             document.getElementById('rulesP2Name').innerText = playerName;
             showPage(3);
@@ -198,100 +228,164 @@
         ];
 
         let qIdx = 0;
-        function startQuiz() { qIdx = 0; scoreP1 = 0; showPage(4); loadQuestion(); }
+        function startQuiz() { 
+            qIdx = 0; 
+            scoreP1 = 0; 
+            showPage(4); 
+            loadQuestion(); 
+        }
+
         function loadQuestion() {
             const data = questions[qIdx];
-            document.getElementById('qTitle').innerText = data.q;
+            document.getElementById('qTitle').innerText = `Question ${qIdx + 1}: ${data.q}`;
             const cont = document.getElementById('quizContent');
             cont.innerHTML = '';
             if(data.type === "text") {
-                cont.innerHTML = `<input type="text" id="textAns" placeholder="Type here"><br><button class="next-btn" onclick="checkAns(document.getElementById('textAns').value)">Submit</button>`;
+                cont.innerHTML = `<input type="text" id="textAns" style="padding: 10px; border-radius: 5px; width: 70%; font-size: 1rem;" placeholder="Type here"><br><button type="button" class="next-btn" onclick="checkAns(document.getElementById('textAns').value)">Submit Answer</button>`;
             } else {
-                data.a.forEach((opt, i) => { cont.innerHTML += `<div class="quiz-option" onclick="checkAns(${i})">${opt}</div>`; });
+                data.a.forEach((opt, i) => { 
+                    cont.innerHTML += `<div class="quiz-option" onclick="checkAns(${i})">${opt}</div>`; 
+                });
             }
         }
 
         function checkAns(val) {
             const data = questions[qIdx];
-            if(data.type === "text" ? val.toLowerCase().trim() === data.c : val === data.c) scoreP1++;
+            if(data.type === "text") {
+                if(typeof val === "string" && val.toLowerCase().trim() === data.c) scoreP1++;
+            } else {
+                if(val === data.c) scoreP1++;
+            }
             qIdx++;
-            if(qIdx < questions.length) loadQuestion();
-            else {
+            if(qIdx < questions.length) {
+                loadQuestion();
+            } else {
                 showPage(5);
-                let p1Percent = (scoreP1 / questions.length) * 100;
-                document.getElementById('p1Feedback').innerText = `Your Quiz Result: ${p1Percent}%`;
+                let p1Percent = Math.round((scoreP1 / questions.length) * 100);
+                document.getElementById('p1Feedback').innerText = `Your Quiz Result: ${p1Percent}% (${scoreP1}/${questions.length})`;
                 document.getElementById('p1Fail').classList.add('hidden');
                 document.getElementById('blueCardBox').classList.add('hidden');
-                if(p1Percent >= 70) { wonBlue = true; document.getElementById('blueCardBox').classList.remove('hidden'); }
-                else { wonBlue = false; document.getElementById('p1Fail').classList.remove('hidden'); }
+                if(p1Percent >= 70) { 
+                    wonBlue = true; 
+                    document.getElementById('blueCardBox').classList.remove('hidden'); 
+                } else { 
+                    wonBlue = false; 
+                    document.getElementById('p1Fail').classList.remove('hidden'); 
+                }
             }
         }
 
         const puzzleData = [
-            {msg: "The Bastard who knew nothing but wore the crown of winter", img: "Jon Snow"}, {msg: "The slime who built a nation from a cave in the forest", img: "Limule Tempest"},
-            {msg: "NOBODY:The north remember & winter is coming", img: "ARYA STARK"}, {msg: "The architect of this birthday & King of this domain", img: "DARIUS"}, {msg: "The genius of the gentle first who died for his sister's branch", img: "Neji"},
-            {msg: "The Son who shot the Ghost to start a lagacy", img: "Ghost"}, {msg: "Twilight", img: "Twilight"}, {msg: "The girl with numbers on her skin and the power of the mind", img: "Eleven"},
-            {msg: "A genius engineer pro in escape game", img: "Michael Schofield"}, {msg: "The mastermind behind the red masks and the Royal Mint", img: "The Professor"}
+            {msg: "The Bastard who knew nothing but wore the crown of winter", img: "Jon Snow"}, 
+            {msg: "The slime who built a nation from a cave in the forest", img: "Limule Tempest"},
+            {msg: "NOBODY: The north remembers & winter is coming", img: "ARYA STARK"}, 
+            {msg: "The architect of this birthday & King of this domain", img: "DARIUS"}, 
+            {msg: "The genius of the gentle fist who died for his sister's branch", img: "Neji"},
+            {msg: "The Son who shot the Ghost to start a legacy", img: "Ghost"}, 
+            {msg: "Twilight", img: "Twilight"}, 
+            {msg: "The girl with numbers on her skin and the power of the mind", img: "Eleven"},
+            {msg: "A genius engineer pro in escape game", img: "Michael Schofield"}, 
+            {msg: "The mastermind behind the red masks and the Royal Mint", img: "The Professor"}
         ];
 
-        function startPuzzle() { scoreP2 = 0; showPage(7); setupPuzzle(); }
+        function startPuzzle() { 
+            scoreP2 = 0; 
+            showPage(7); 
+            setupPuzzle(); 
+        }
+
         function setupPuzzle() {
-    const grid = document.getElementById('puzzleGrid'); 
-    const bank = document.getElementById('imageBank');
-    
-    // Clear the areas first
-    grid.innerHTML = ''; 
-    bank.innerHTML = '';
+            const grid = document.getElementById('puzzleGrid'); 
+            const bank = document.getElementById('imageBank');
+            grid.innerHTML = ''; 
+            bank.innerHTML = '';
+            selectedImgElement = null;
 
-    // 1. Create the target squares (these stay in their original order)
-    puzzleData.forEach((item, i) => {
-        grid.innerHTML += `<div class="puzzle-square" ondrop="drop(event)" ondragover="allowDrop(event)" data-id="${item.img}">
-            <p>${item.msg}</p>
-        </div>`;
-    });
+            puzzleData.forEach((item) => {
+                const square = document.createElement('div');
+                square.className = 'puzzle-square';
+                square.setAttribute('data-id', item.img);
+                square.setAttribute('ondrop', 'drop(event)');
+                square.setAttribute('ondragover', 'allowDrop(event)');
+                square.onclick = () => placeImageInSquare(square);
+                square.innerHTML = `<p>${item.msg}</p>`;
+                grid.appendChild(square);
+            });
 
-    // 2. Create a shuffled (randomized) copy of the data for the images
-    let shuffledImages = [...puzzleData].sort(() => Math.random() - 0.5);
+            let shuffledImages = [...puzzleData].sort(() => Math.random() - 0.5);
 
-    // 3. Add the images to the bank in the new random order
-    shuffledImages.forEach((item, i) => {
-        bank.innerHTML += `<img src="${item.img}.jpg" 
-            class="draggable-img" 
-            draggable="true" 
-            ondragstart="drag(event)" 
-            id="img-shuffle-${i}" 
-            data-name="${item.img}">`;
-    });
-}
+            shuffledImages.forEach((item, i) => {
+                const img = document.createElement('img');
+                img.src = `${item.img}.jpg`;
+                img.alt = item.img;
+                img.className = 'draggable-img';
+                img.draggable = true;
+                img.id = `img-shuffle-${i}`;
+                img.setAttribute('data-name', item.img);
+                img.setAttribute('ondragstart', 'drag(event)');
+                img.onclick = (e) => {
+                    e.stopPropagation();
+                    selectImageForMobile(img);
+                };
+                bank.appendChild(img);
+            });
+        }
+
+        function selectImageForMobile(img) {
+            if (selectedImgElement) {
+                selectedImgElement.classList.remove('selected');
+            }
+            if (selectedImgElement === img) {
+                selectedImgElement = null;
+            } else {
+                selectedImgElement = img;
+                selectedImgElement.classList.add('selected');
+            }
+        }
+
+        function placeImageInSquare(square) {
+            if (!selectedImgElement) return;
+            if (square.querySelector('img')) return;
+
+            square.appendChild(selectedImgElement);
+            selectedImgElement.style.margin = "5px auto";
+            selectedImgElement.classList.remove('selected');
+            selectedImgElement = null;
+        }
+
+        function dropBackTap(ev) {
+            if (selectedImgElement && ev.target.id === 'imageBank') {
+                document.getElementById('imageBank').appendChild(selectedImgElement);
+                selectedImgElement.classList.remove('selected');
+                selectedImgElement = null;
+            }
+        }
+
         function allowDrop(ev) { ev.preventDefault(); }
         function drag(ev) { ev.dataTransfer.setData("text", ev.target.id); }
         function drop(ev) {
             ev.preventDefault();
-            // Prevent dropping if the square already contains an image
-            if (ev.target.tagName === 'IMG' || ev.target.querySelectorAll('img').length > 0) {
-                return; 
-            }
-            
+            let target = ev.target;
+            if (target.tagName === 'P') target = target.parentElement;
+            if (target.tagName === 'IMG') return;
+
             var data = ev.dataTransfer.getData("text");
             var draggedElement = document.getElementById(data);
-            
-            // Ensure we are dropping into the square, not the text inside it
-            let target = ev.target;
-            if (target.tagName === 'P') {
-                target = target.parentElement;
+            if(draggedElement) {
+                target.appendChild(draggedElement);
+                draggedElement.style.margin = "5px auto";
             }
-            
-            target.appendChild(draggedElement);
-            draggedElement.style.margin = "5px auto";
         }
 
-        // Add this so people can move images BACK to the starting area
         function dropBack(ev) {
             ev.preventDefault();
             var data = ev.dataTransfer.getData("text");
             var draggedElement = document.getElementById(data);
-            document.getElementById('imageBank').appendChild(draggedElement);
+            if(draggedElement) {
+                document.getElementById('imageBank').appendChild(draggedElement);
+            }
         }
+
         function checkPuzzle() {
             const squares = document.querySelectorAll('.puzzle-square');
             let filledCount = 0;
@@ -315,79 +409,27 @@
             document.getElementById('p2Feedback').innerText = `Your Puzzle Result: ${scoreP2} out of 10`;
             document.getElementById('p2Fail').classList.add('hidden');
             document.getElementById('redCardBox').classList.add('hidden');
-            if(scoreP2 >= 8) { wonRed = true; document.getElementById('redCardBox').classList.remove('hidden'); }
-            else { wonRed = false; document.getElementById('p2Fail').classList.remove('hidden'); }
-        }
-        function finalizeChallenge() {
-    showPage(9);
-    const area = document.getElementById('finalStatusArea');
-    
-    // Update the counter: this play is now finished
-    localStorage.setItem('bday_attempts', attempts + 1);
-    
-    // Create the Skull symbol if they have played before (attempts > 0)
-    let symbol = (attempts > 0) ? `<div class="skull-mark">☠️ REPEATER</div>` : "";
-
-    let finalContent = "";
-
-    // Logic for the Blue Card (Quiz)
-    if(wonBlue) {
-        finalContent += `
-        <div class="reward-box b-card">
-            ${symbol}
-            <h3>🏆 The Blue Card</h3>
-            <p>Well done ✅ partner. Je ne sais pas quoi t'offrir, but you can ask me anything you want 💙</p>
-        </div>`;
-    }
-
-    // Logic for the Red Card (Puzzle)
-    if(wonRed) {
-        finalContent += `
-        <div class="reward-box r-card">
-            ${symbol}
-            <h3>🔥 The Red Card</h3>
-            <p>You have mastered the Abyss and won a free month of Netflix 🎬</p>
-        </div>`;
-    }
-
-    // Logic for the Ultimate Rank (Both)
-    if(wonBlue && wonRed) {
-        finalContent += `
-        <div class="reward-box g-card">
-            ${symbol}
-            <h1>🏆 Golden Card</h1>
-            <p>You are my premium challenger my chancellor you receive the title of lord ${playerName}</p>
-        </div>`;
-    } 
-    
-    // Logic for the Loser (Neither)
-    if (!wonBlue && !wonRed) {
-        finalContent += `
-        <div class="reward-box blk-card">
-            <h1>💀 Black Card</h1>
-            <p>Thank you for trying 😂😂 you're a loser capture your card and send it to my inbox</p>
-        </div>`;
-    }
-
-    area.innerHTML = finalContent;
-    
-    // Lock the game
-    localStorage.setItem('played_bday_vfinal', 'true');
-        }
-        function displayFinalCards() {
-            const area = document.getElementById('finalStatusArea');
-            const hasBlue = localStorage.getItem('blue') === 'true';
-            const hasRed = localStorage.getItem('red') === 'true';
-            
-            let htmlContent = `<h3>Official Record for ${localStorage.getItem('pName')}</h3>`;
-            if(hasBlue && hasRed) {
-                htmlContent += `<div class="reward-box g-card"><h1>🏆 Golden Card</h1><p>You are my premium challenger my chancellor you receive the title of lord ${localStorage.getItem('pName')} screenshot the card and send it to me</p></div>`;
-            } else if (!hasBlue && !hasRed) {
-                htmlContent += `<div class="reward-box blk-card"><h1>💀 Black Card</h1><p>Thank you for trying 😂😂 you're a loser capture your card and send it to my inbox</p></div>`;
-            } else {
-                if(hasBlue) htmlContent += `<div class="reward-box b-card"><h3>🏆 The Blue Card</h3><p>Well done partner. You can ask me anything you want 💙</p></div>`;
-                if(hasRed) htmlContent += `<div class="reward-box r-card"><h3>🔥 The Red Card</h3><p>Master of the Abyss! You won one month of Netflix 🎬</p></div>`;
+            if(scoreP2 >= 8) { 
+                wonRed = true; 
+                document.getElementById('redCardBox').classList.remove('hidden'); 
+            } else { 
+                wonRed = false; 
+                document.getElementById('p2Fail').classList.remove('hidden'); 
             }
-            area.innerHTML = htmlContent;
+        }
 
+        function finalizeChallenge() {
+            showPage(9);
+            const area = document.getElementById('finalStatusArea');
+            
+            localStorage.setItem('bday_attempts', attempts + 1);
+            let symbol = (attempts > 0) ? `<div class="skull-mark">☠️ REPEATER</div>` : "";
+            let finalContent = "";
+
+            if(wonBlue) {
+                finalContent += `
+                <div class="reward-box 
         
+    
+                
+                
